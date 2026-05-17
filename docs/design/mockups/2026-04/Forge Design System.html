@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>FORGE — Screens</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0A0907; color: #F2EEE7; font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  button { font-family: inherit; }
+
+  .stage { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 32px 24px 64px; gap: 32px; }
+  .head  { width: 100%; max-width: 1240px; display: flex; align-items: baseline; justify-content: space-between; }
+  .head h1 { font-size: 13px; font-weight: 500; color: #F2EEE7; letter-spacing: 0.18em; text-transform: uppercase; }
+  .head span { font-size: 10px; color: #5C544B; letter-spacing: 0.18em; text-transform: uppercase; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 390px);
+    gap: 28px;
+    align-items: start;
+  }
+  @media (max-width: 1700px) { .grid { grid-template-columns: repeat(2, 390px); } }
+  @media (max-width: 880px)  { .grid { grid-template-columns: 390px; } }
+
+  .card { display: flex; flex-direction: column; gap: 14px; }
+  .label { display: flex; flex-direction: column; gap: 2px; padding: 0 4px; }
+  .label .ttl { font-size: 13px; font-weight: 500; color: #F2EEE7; letter-spacing: 0; }
+  .label .sub { font-size: 10px; color: #5C544B; letter-spacing: 0.18em; text-transform: uppercase; }
+
+  .phone {
+    width: 390px; height: 844px;
+    border-radius: 44px;
+    overflow: hidden;
+    background: #100E0C;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 30px 60px -20px rgba(0,0,0,0.6);
+    border: 0.5px solid #251F1A;
+    position: relative;
+  }
+  .phone .scroller { width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden; }
+  .phone .scroller::-webkit-scrollbar { width: 0; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="head">
+      <h1>FORGE — Screens</h1>
+      <span>v1 · for code import · April 2026</span>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="label"><span class="sub">01 / Home</span><span class="ttl">Today</span></div>
+        <div class="phone"><div class="scroller" id="m1"></div></div>
+      </div>
+      <div class="card">
+        <div class="label"><span class="sub">02 / Progress</span><span class="ttl">Score detail</span></div>
+        <div class="phone"><div class="scroller" id="m2"></div></div>
+      </div>
+      <div class="card">
+        <div class="label"><span class="sub">03 / Capture</span><span class="ttl">Cycle photo</span></div>
+        <div class="phone"><div class="scroller" id="m3"></div></div>
+      </div>
+      <div class="card">
+        <div class="label"><span class="sub">04 / Milestone</span><span class="ttl">Day 30 of 90</span></div>
+        <div class="phone"><div class="scroller" id="m4"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- Tokens (use as IIFE since file uses ES `export`) -->
+  <script type="text/babel">
+  (function() {
+    const C = {
+      canvas:'#0A0907', surface:'#100E0C', raised:'#181513', raisedHi:'#1F1A16',
+      divider:'#251F1A', muted:'#5C544B', ash:'#8A7D72', bone:'#F2EEE7',
+      boneTint:'#E8DFD0', ember:'#C4543A', brass:'#B89F7E',
+    };
+    const T = {
+      hero:       { fontSize: 64, fontWeight: 700, letterSpacing: '-0.035em', lineHeight: 1, fontFeatureSettings: '"tnum" 1' },
+      heroLarge:  { fontSize: 96, fontWeight: 700, letterSpacing: '-0.045em', lineHeight: 0.95, fontFeatureSettings: '"tnum" 1' },
+      display:    { fontSize: 32, fontWeight: 600, letterSpacing: '-0.020em', lineHeight: 1.15 },
+      displaySm:  { fontSize: 28, fontWeight: 600, letterSpacing: '-0.018em', lineHeight: 1.15, fontFeatureSettings: '"tnum" 1' },
+      body:       { fontSize: 17, fontWeight: 400, letterSpacing: '0em', lineHeight: 1.55 },
+      caption:    { fontSize: 13, fontWeight: 400, letterSpacing: '0em', lineHeight: 1.45 },
+      micro:      { fontSize: 11, fontWeight: 500, letterSpacing: '0.04em', lineHeight: 1.4 },
+      eyebrow:    { fontSize: 10, fontWeight: 600, letterSpacing: '0.18em', lineHeight: 1.4, textTransform: 'uppercase' },
+      eyebrowWide:{ fontSize: 10, fontWeight: 600, letterSpacing: '0.22em', lineHeight: 1.4, textTransform: 'uppercase' },
+    };
+    const EASE = {
+      entrance: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      resolution: 'cubic-bezier(0.4, 0, 1, 1)',
+      state: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    };
+    const GRAIN_SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.93 0 0 0 0 0.88 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>";
+    Object.assign(window, { C, T, EASE, GRAIN_SVG });
+  })();
+  </script>
+
+  <script type="text/babel" src="01-Home.jsx"></script>
+  <script type="text/babel" src="02-Progress.jsx"></script>
+  <script type="text/babel" src="03-Capture.jsx"></script>
+  <script type="text/babel" src="04-Milestone.jsx"></script>
+
+  <script type="text/babel">
+    const mount = (id, el) => ReactDOM.createRoot(document.getElementById(id)).render(el);
+    setTimeout(() => {
+      mount('m1', <HomeScreen/>);
+      mount('m2', <ProgressScreen/>);
+      mount('m3', <CaptureScreen/>);
+      mount('m4', <MilestoneScreen/>);
+    }, 100);
+  </script>
+</body>
+</html>
