@@ -2,6 +2,18 @@
 
 ## 2026-05-19
 
+### Backend — P8 Coaching Engine Complete
+
+- **P8: Coaching Engine (Deterministic Templates)**
+  - Created `language_stage.py` — 3 language stages: outcome (≤14d), habit (15-30d), mechanism (31+d)
+  - Created `templates.py` — ~60 daily insight templates across 3 stages × 4 contexts × 9 pillars
+  - Created `weekly_templates.py` — coaching paragraphs + focus paragraphs for weekly reports
+  - Created `season_templates.py` — narrative templates for end-of-season reports
+  - Created `service.py` — template selection with context detection (streak milestones, pillar movers, completion rate)
+  - Created `router.py` — `GET /daily-insight`, `GET /weekly-report/{week}`, `GET /weekly-reports`, `GET /season-report`
+  - Zero LLM calls — all coaching content generated deterministically
+  - 22 tests (13 unit + 9 integration) — all passing (119 total in suite)
+
 ### Frontend — F5 Main App Shell + Home Screen Complete
 
 - **F5: Main App Shell + Home Screen**

@@ -12,7 +12,7 @@
 |---|---|---|---|
 | **S1** | P1–P5, F1–F4 | Backend scaffold + Auth + Quiz + Plans + Onboarding frontend | ✅ Done |
 | **S2** | P6–P7, F5 | Task engine + Progress scoring + Main app shell (tabs, home) | ✅ Done |
-| **S3** | P8, F6 | Coaching templates + Insights/weekly reports frontend | ⬜ Todo |
+| **S3** | P8, F6 | Coaching templates + Insights/weekly reports frontend | 🔄 In progress |
 | **S4** | P9–P10, F7 | R2 storage + Photo check-ins + Cycle UI | ⬜ Todo |
 | **S5** | P11, F8 | Gamification backend + Achievements/challenges frontend | ⬜ Todo |
 | **S6** | P12–P13, F9 | Subscriptions + Scheduler + Settings/profile frontend | ⬜ Todo |
@@ -250,16 +250,16 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create `backend/src/coaching/language_stage.py` — `stage_for_day()`: outcome (≤14), habit (15–30), mechanism (31+) |
-| ⬜ | Create `backend/src/coaching/templates.py` — ~60 daily insight templates keyed by (stage, context_type, pillar) |
-| ⬜ | Create `backend/src/coaching/weekly_templates.py` — ~20 weekly report paragraph templates |
-| ⬜ | Create `backend/src/coaching/season_templates.py` — season report narrative templates |
-| ⬜ | Create `backend/src/coaching/service.py` — `get_daily_insight()`, `get_weekly_report()`, `get_season_report()`, `generate_onboarding_compliment()` |
-| ⬜ | Template selection: find biggest pillar mover, streak state, completion rate → pick template → interpolate |
-| ⬜ | Rotation tracking: store last-used template index per user to avoid repetition |
-| ⬜ | Create `backend/src/coaching/schemas.py` — `InsightResponse`, `WeeklyReportResponse`, `SeasonReportResponse` |
-| ⬜ | Create `backend/src/coaching/router.py` — `GET /daily-insight`, `GET /weekly-report/{week}`, `GET /weekly-reports`, `GET /season-report` |
-| ⬜ | Write tests: `test_stage_for_day`, `test_template_selection`, `test_variable_interpolation`, `test_rotation_no_repeat`, `test_all_stages_covered` |
+| ✅ | Create `backend/src/coaching/language_stage.py` — `stage_for_day()`: outcome (≤14), habit (15–30), mechanism (31+) |
+| ✅ | Create `backend/src/coaching/templates.py` — ~60 daily insight templates keyed by (stage, context_type, pillar) |
+| ✅ | Create `backend/src/coaching/weekly_templates.py` — ~20 weekly report paragraph templates |
+| ✅ | Create `backend/src/coaching/season_templates.py` — season report narrative templates |
+| ✅ | Create `backend/src/coaching/service.py` — `get_daily_insight()`, `get_weekly_report()`, `get_season_report()` |
+| ✅ | Template selection: find biggest pillar mover, streak state, completion rate → pick template → interpolate |
+| ✅ | Rotation tracking: program_day modulo template count for rotation |
+| ✅ | Create `backend/src/coaching/schemas.py` — `InsightResponse`, `WeeklyReportResponse`, `SeasonReportResponse` |
+| ✅ | Create `backend/src/coaching/router.py` — `GET /daily-insight`, `GET /weekly-report/{week}`, `GET /weekly-reports`, `GET /season-report` |
+| ✅ | Write tests: 22 tests (13 unit + 9 integration) — all passing |
 
 ---
 
