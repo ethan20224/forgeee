@@ -12,7 +12,7 @@
 |---|---|---|---|
 | **S1** | P1–P5, F1–F4 | Backend scaffold + Auth + Quiz + Plans + Onboarding frontend | ✅ Done |
 | **S2** | P6–P7, F5 | Task engine + Progress scoring + Main app shell (tabs, home) | ✅ Done |
-| **S3** | P8, F6 | Coaching templates + Insights/weekly reports frontend | 🔄 In progress |
+| **S3** | P8, F6 | Coaching templates + Insights/weekly reports frontend | ✅ Done |
 | **S4** | P9–P10, F7 | R2 storage + Photo check-ins + Cycle UI | ⬜ Todo |
 | **S5** | P11, F8 | Gamification backend + Achievements/challenges frontend | ⬜ Todo |
 | **S6** | P12–P13, F9 | Subscriptions + Scheduler + Settings/profile frontend | ⬜ Todo |
@@ -269,16 +269,16 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create API module: `mobile/src/api/coaching.ts` (getDailyInsight, getWeeklyReport, getWeeklyReports, getSeasonReport) |
-| ⬜ | Add daily insight to Home screen: fetch `GET /coaching/daily-insight`, render insight card below streak badge |
-| ⬜ | Create `mobile/src/components/InsightCard.tsx` — Coaching insight with stage indicator, pillar badge, animated reveal |
-| ⬜ | Port `mobile/app/(app)/(tabs)/program.tsx` — Program tab: phase banner, week-by-week roadmap, current day marker |
-| ⬜ | Create `mobile/src/components/WeekRow.tsx` — Week summary row (week number, completion %, status pill) |
-| ⬜ | Create `mobile/app/(app)/weekly-report/[week].tsx` — Weekly report detail screen (pillar table, coaching note, focus) |
-| ⬜ | Port heatmap view: `GET /tasks/heatmap` → 90-day grid colored by completion rate |
-| ⬜ | Create `mobile/src/components/HeatmapGrid.tsx` — 90-day calendar grid with pillar-colored dots |
-| ⬜ | Wire Program tab: `GET /plans/current` for roadmap, `GET /coaching/weekly-reports` for list |
-| ⬜ | Handle phase transitions: show phase banner (Foundation → Building → Optimisation) based on `phaseForDay()` |
+| ✅ | Create API module: `mobile/src/api/coaching.ts` (getDailyInsight, getWeeklyReport, getWeeklyReports, getSeasonReport) |
+| ✅ | Add daily insight to Home screen: fetch `GET /coaching/daily-insight`, render insight card below streak badge |
+| ✅ | Create `mobile/src/components/InsightCard.tsx` — Coaching insight with stage indicator, pillar badge |
+| ✅ | Port `mobile/app/(app)/(tabs)/program.tsx` — Program tab: phase banner, week-by-week roadmap, current day marker |
+| ✅ | Create `mobile/src/components/WeekRow.tsx` — Week summary row (week number, completion %, status pill) |
+| ✅ | Create `mobile/app/(app)/weekly-report/[week].tsx` — Weekly report detail screen (pillar table, coaching note, focus) |
+| ✅ | Port heatmap view: `GET /tasks/heatmap` → 90-day grid colored by completion rate |
+| ✅ | Create `mobile/src/components/HeatmapGrid.tsx` — 90-day calendar grid with completion-rate coloring |
+| ✅ | Wire Program tab: `GET /plans/current` for roadmap, `GET /coaching/weekly-reports` for list |
+| ✅ | Handle phase transitions: show phase banner (The Basics → Building Up → Results) based on `phaseForDay()` |
 
 ---
 

@@ -148,6 +148,56 @@ export interface PillarDetailResponse {
   history: PillarHistoryPoint[]
 }
 
+// --- Coaching ---
+
+export interface InsightResponse {
+  stage: string
+  context_type: string
+  pillar: string | null
+  message: string
+  program_day: number
+}
+
+export interface PillarMovement {
+  pillar: string
+  label: string
+  score: number
+  delta: number
+}
+
+export interface WeeklyReportResponse {
+  week_number: number
+  season: number
+  completion_rate: number
+  completed_tasks: number
+  total_tasks: number
+  pillar_movements: PillarMovement[]
+  coaching_note: string
+  focus_next_week: string
+  generated_at: string | null
+}
+
+export interface WeeklyReportSummary {
+  week_number: number
+  season: number
+  completion_rate: number
+  generated_at: string | null
+}
+
+export interface SeasonReportResponse {
+  season: number
+  opening: string
+  biggest_mover: string
+  needs_work: string
+  next_focus: string
+  score_start: number
+  score_end: number
+  score_delta: number
+  total_tasks_completed: number
+  completion_rate: number
+  streak_best: number
+}
+
 // --- Common ---
 
 export interface ApiError {

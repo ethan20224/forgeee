@@ -2,6 +2,19 @@
 
 ## 2026-05-19
 
+### Frontend — F6 Coaching UI + Program Tab Complete
+
+- **F6: Coaching UI + Program Tab**
+  - Created `src/api/coaching.ts` (getDailyInsight, getWeeklyReport, getWeeklyReports, getSeasonReport)
+  - Created `InsightCard` component with stage badge (Results/Habit/Science) and pillar indicator
+  - Added daily insight card to Home screen (fetched on mount)
+  - Rebuilt Program tab: phase banner (The Basics → Building Up → Results), 13-week roadmap with WeekRow, HeatmapGrid
+  - Created `WeekRow` component with completion %, status pill (Strong/Building/Starting/Upcoming), current week highlight
+  - Created `HeatmapGrid` — 90-day grid with completion-rate heat coloring and current day marker
+  - Created weekly report detail screen (`/weekly-report/[week]`) with pillar bars, coaching note, focus paragraph
+  - Added coaching TypeScript interfaces to `types/api.ts`
+  - TypeScript compilation clean (zero errors)
+
 ### Backend — P8 Coaching Engine Complete
 
 - **P8: Coaching Engine (Deterministic Templates)**

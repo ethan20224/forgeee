@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import {
   View,
   Text,
@@ -14,6 +14,9 @@ import { useProgressStore } from "@/store/progressStore"
 import { TaskCard } from "@/components/TaskCard"
 import { StreakBadge } from "@/components/StreakBadge"
 import { CompletionRing } from "@/components/CompletionRing"
+import { InsightCard } from "@/components/InsightCard"
+import { getDailyInsight } from "@/api/coaching"
+import type { InsightResponse } from "@/types/api"
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets()
@@ -21,10 +24,12 @@ export default function HomeScreen() {
   const { todaysTasks, isLoadingTasks, fetchTodaysTasks, completeTask } =
     useProgramStore()
   const { currentStreak, fetchProgress } = useProgressStore()
+  const [insight, setInsight] = useState<InsightResponse | null>(null)
 
   useEffect(() => {
     fetchTodaysTasks()
     fetchProgress()
+    getDailyInsight().then(setInsight).catch(() => {})
   }, [])
 
   const handleComplete = async (taskId: string) => {
@@ -75,6 +80,14 @@ export default function HomeScreen() {
           </Text>
         </View>
       </View>
+
+      {insight && (
+        <InsightCard
+          message={insight.message}
+          stage={insight.stage}
+          pillar={insight.pillar}
+        />
+      )}
 
       <View style={styles.taskList}>
         {todaysTasks.length === 0 && !isLoadingTasks && (
