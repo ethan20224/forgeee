@@ -2,6 +2,35 @@
 
 ## 2026-05-19
 
+### Backend — P7 Progress & Score Calculator Complete
+
+- **P7: Progress & Score Calculator**
+  - Created `src/progress/score_calculator.py` — deterministic scoring engine
+  - Ported face shape weights for 8 shapes (oval, square, round, long, oblong, heart, diamond, triangle)
+  - Ported seasonal reweight: voice excluded in Season 1, included from Season 2+
+  - Quiz concern boosts: +0.05 to relevant pillar(s), normalised to sum 1.0
+  - `calculate_optimisation_score()` — weighted average with null-pillar exclusion
+  - `derive_initial_weights()` — face shape + concern + season → personalised weights
+  - `diff_pillars()` — per-pillar delta computation clamped to [-100, 100]
+  - Created `src/progress/service.py` — `get_progress()`, `get_pillar_detail()` with history
+  - Created `src/progress/router.py` — `GET /`, `GET /pillar/{pillar}`
+  - 35 tests (27 unit + 8 integration) — all passing (97 total in suite)
+
+### Backend — P6 Task Engine Complete
+
+- **P6: Task Engine**
+  - Created `src/tasks/service.py` with `get_todays_tasks()`, `complete_task()`, `get_heatmap()`
+  - Created `src/tasks/schemas.py` — TaskResponse, CompleteTaskResponse, HeatmapResponse
+  - Created `src/tasks/router.py` — `GET /today`, `POST /{task_id}/complete`, `GET /heatmap`
+  - Task completion: idempotency guard prevents double XP award
+  - XP system: +10 XP per task, +5 streak bonus when streak > 3, level calculation from 20 thresholds
+  - Streak logic: increment on consecutive days, reset after gap, detect milestones (7, 14, 30, 60, 90)
+  - Score drift: +0.5 to task's pillar score, capped at 100, recalculates optimisation score
+  - Pending effects queue: inserts PendingTaskEffect before applying drift for resilience
+  - 14 integration tests — all passing (62 total tests in suite)
+
+## 2026-05-19
+
 ### Frontend — F1-F4 Complete
 
 - **F1: Expo Scaffold + Design System + API Client**

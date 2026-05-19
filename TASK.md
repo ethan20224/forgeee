@@ -193,15 +193,15 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create `backend/src/tasks/service.py` — `get_todays_tasks()`, `complete_task()`, `get_heatmap()` |
-| ⬜ | Create `backend/src/tasks/schemas.py` — `TaskResponse`, `CompleteTaskResponse`, `HeatmapResponse` |
-| ⬜ | Create `backend/src/tasks/router.py` — `GET /today`, `POST /{task_id}/complete`, `GET /heatmap` |
-| ⬜ | `complete_task()`: idempotency guard, set `is_completed=True`, `completed_at=now()` |
-| ⬜ | XP award: +10 XP per task, +5 streak bonus when streak > 3, update level from thresholds |
-| ⬜ | Streak update: compare `last_active_date`, increment or reset, detect milestones (7, 14, 30, 60, 90) |
-| ⬜ | Score drift: +0.5 to task's pillar, cap at 100, recalculate optimisation score |
-| ⬜ | Pending effects queue: insert before applying, mark `applied_at` on success |
-| ⬜ | Write tests: `test_complete_task`, `test_xp_award`, `test_streak_increment`, `test_streak_reset`, `test_drift_cap`, `test_idempotency` |
+| ✅ | Create `backend/src/tasks/service.py` — `get_todays_tasks()`, `complete_task()`, `get_heatmap()` |
+| ✅ | Create `backend/src/tasks/schemas.py` — `TaskResponse`, `CompleteTaskResponse`, `HeatmapResponse` |
+| ✅ | Create `backend/src/tasks/router.py` — `GET /today`, `POST /{task_id}/complete`, `GET /heatmap` |
+| ✅ | `complete_task()`: idempotency guard, set `is_completed=True`, `completed_at=now()` |
+| ✅ | XP award: +10 XP per task, +5 streak bonus when streak > 3, update level from thresholds |
+| ✅ | Streak update: compare `last_active_date`, increment or reset, detect milestones (7, 14, 30, 60, 90) |
+| ✅ | Score drift: +0.5 to task's pillar, cap at 100, recalculate optimisation score |
+| ✅ | Pending effects queue: insert before applying, mark `applied_at` on success |
+| ✅ | Write tests: 14 tests covering all task flows — all passing |
 
 ---
 
@@ -211,13 +211,13 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create `backend/src/progress/score_calculator.py` — `calculate_optimisation_score()`, `derive_initial_weights()`, `apply_task_effect()`, `diff_pillars()` |
-| ⬜ | Port face shape weight adjustments from `faceShapeWeights.ts` |
-| ⬜ | Port seasonal reweight logic (voice pillar unlocked in Season 2+) |
-| ⬜ | Create `backend/src/progress/service.py` — `get_progress()`, `get_pillar_detail()` |
-| ⬜ | Create `backend/src/progress/schemas.py` — `ProgressResponse`, `PillarDetailResponse` |
-| ⬜ | Create `backend/src/progress/router.py` — `GET /`, `GET /pillar/{pillar}` |
-| ⬜ | Write tests: `test_weighted_score`, `test_null_pillar_handling`, `test_face_shape_weights`, `test_seasonal_reweight`, `test_clamp_bounds` |
+| ✅ | Create `backend/src/progress/score_calculator.py` — `calculate_optimisation_score()`, `derive_initial_weights()`, `apply_task_effect()`, `diff_pillars()` |
+| ✅ | Port face shape weight adjustments from `faceShapeWeights.ts` — 8 face shapes (oval, square, round, long, oblong, heart, diamond, triangle) |
+| ✅ | Port seasonal reweight logic (voice pillar unlocked in Season 2+) |
+| ✅ | Create `backend/src/progress/service.py` — `get_progress()`, `get_pillar_detail()` |
+| ✅ | Create `backend/src/progress/schemas.py` — `ProgressResponse`, `PillarDetailResponse` |
+| ✅ | Create `backend/src/progress/router.py` — `GET /`, `GET /pillar/{pillar}` |
+| ✅ | Write tests: 27 unit + 8 integration tests — all 35 passing |
 
 ---
 

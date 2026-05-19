@@ -52,11 +52,15 @@ def create_app() -> FastAPI:
 
     from src.auth.router import router as auth_router
     from src.plans.router import router as plans_router
+    from src.progress.router import router as progress_router
     from src.quiz.router import router as quiz_router
+    from src.tasks.router import router as tasks_router
 
     app.include_router(auth_router)
     app.include_router(quiz_router)
     app.include_router(plans_router)
+    app.include_router(tasks_router)
+    app.include_router(progress_router)
 
     @app.get("/health")
     async def health() -> dict[str, str]:
