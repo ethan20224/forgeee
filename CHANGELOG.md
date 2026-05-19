@@ -1,0 +1,37 @@
+# FORGE — Changelog
+
+## 2026-05-19
+
+### Frontend — F1-F4 Complete
+
+- **F1: Expo Scaffold + Design System + API Client**
+  - Initialized Expo project (`mobile/`) with SDK 54, TypeScript, expo-router
+  - Ported Meridian design system tokens (Colors, Typography, Spacing, Radius, Animation, Easing)
+  - Created shared UI components: PrimaryButton, ForgeCard (fallback-only, no SwiftUI dependency)
+  - Built API client with JWT interceptor, 401 auto-refresh, ApiRequestError class
+  - Created auth/quiz/plans API modules targeting FastAPI backend
+  - Created Zustand userStore + expo-secure-store token storage (with web localStorage fallback)
+  - Created TypeScript interfaces matching backend Pydantic schemas
+
+- **F2: Auth Screens**
+  - Ported splash screen (animated progress bar, FORGE wordmark, radial glow)
+  - Ported welcome slides (3 slides with Reanimated fade/slide transitions)
+  - Ported signup/login screen rewired to FastAPI auth endpoints
+  - Root layout with JWT-based auth check (replaces Supabase auth listener)
+
+- **F3: Quiz Flow + Estimated Score**
+  - Ported 6-step quiz with option values aligned to backend regex patterns
+  - Options updated: daily_time (10/20/30/45/60min), timeline (30/60/90days), age_range (16-19 through 40+), main_concern (+overall)
+  - Created client-side deterministic score estimator (mirrors backend heuristics)
+  - Ported estimated-score screen (hero score, biggest levers, protocol bullets)
+
+- **F4: Plan Loading + Plan Reveal**
+  - Ported plan-loading screen (spinner, cycling messages, POST quiz/submit then POST plans/generate)
+  - Ported plan-reveal screen (score banner, programme name, improvements, limitations, timeline, roadmap)
+  - Added `POST /api/v1/auth/complete-onboarding` backend endpoint (sets onboarded=true, plan_start_date=today)
+  - All 48 backend tests passing, TypeScript compilation clean
+
+### Backend — Discovered During Work
+
+- Added `POST /api/v1/auth/complete-onboarding` endpoint to `backend/src/auth/router.py`
+- Updated CORS origins to include `http://localhost:19006` for Expo web dev server
