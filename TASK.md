@@ -11,7 +11,7 @@
 | Sprint | Phases | Focus | Status |
 |---|---|---|---|
 | **S1** | P1–P5, F1–F4 | Backend scaffold + Auth + Quiz + Plans + Onboarding frontend | ✅ Done |
-| **S2** | P6–P7, F5 | Task engine + Progress scoring + Main app shell (tabs, home) | ⬜ Todo |
+| **S2** | P6–P7, F5 | Task engine + Progress scoring + Main app shell (tabs, home) | ✅ Done |
 | **S3** | P8, F6 | Coaching templates + Insights/weekly reports frontend | ⬜ Todo |
 | **S4** | P9–P10, F7 | R2 storage + Photo check-ins + Cycle UI | ⬜ Todo |
 | **S5** | P11, F8 | Gamification backend + Achievements/challenges frontend | ⬜ Todo |
@@ -227,18 +227,18 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create API modules: `mobile/src/api/tasks.ts` (getToday, completeTask, getHeatmap) and `mobile/src/api/progress.ts` (getProgress, getPillar) |
-| ⬜ | Create Zustand stores: `programStore.ts` (plan, tasks, currentDay) and `progressStore.ts` (pillarScores, streak, xp, level) |
-| ⬜ | Port `mobile/app/(app)/(tabs)/_layout.tsx` — 5-tab layout (Home, Progress, Program, Goals, Profile) with Meridian styling and icon set |
-| ⬜ | Port `mobile/app/(app)/(tabs)/index.tsx` — Home screen: greeting header, streak flame, today's task cards, completion ring |
-| ⬜ | Create `mobile/src/components/TaskCard.tsx` — Task card with pillar color accent, checkbox, tap-to-complete animation |
-| ⬜ | Create `mobile/src/components/StreakBadge.tsx` — Flame icon + streak count + milestone callout |
-| ⬜ | Create `mobile/src/components/CompletionRing.tsx` — Animated circular progress for daily task completion |
-| ⬜ | Wire Home screen: `GET /tasks/today` on mount, `POST /tasks/{id}/complete` on tap, refresh progress after completion |
-| ⬜ | Port `mobile/app/(app)/(tabs)/progress.tsx` — Progress tab: optimisation score hero, 9 pillar score bars, sparkline trends |
-| ⬜ | Create `mobile/src/components/PillarBar.tsx` — Horizontal bar with pillar color, score label, delta indicator |
-| ⬜ | Wire Progress tab: `GET /progress` on mount, pull-to-refresh |
-| ⬜ | Handle empty state: show "Complete your first task to see progress" when no tasks completed yet |
+| ✅ | Create API modules: `mobile/src/api/tasks.ts` (getToday, completeTask, getHeatmap) and `mobile/src/api/progress.ts` (getProgress, getPillar) |
+| ✅ | Create Zustand stores: `programStore.ts` (plan, tasks, currentDay) and `progressStore.ts` (pillarScores, streak, xp, level) |
+| ✅ | Port `mobile/app/(app)/(tabs)/_layout.tsx` — 5-tab layout (Home, Progress, Program, Goals, Profile) with Meridian styling and icon set |
+| ✅ | Port `mobile/app/(app)/(tabs)/index.tsx` — Home screen: greeting header, streak flame, today's task cards, completion ring |
+| ✅ | Create `mobile/src/components/TaskCard.tsx` — Task card with pillar color accent, checkbox, tap-to-complete animation |
+| ✅ | Create `mobile/src/components/StreakBadge.tsx` — Flame icon + streak count + milestone callout |
+| ✅ | Create `mobile/src/components/CompletionRing.tsx` — Animated circular progress for daily task completion |
+| ✅ | Wire Home screen: `GET /tasks/today` on mount, `POST /tasks/{id}/complete` on tap, refresh progress after completion |
+| ✅ | Port `mobile/app/(app)/(tabs)/progress.tsx` — Progress tab: optimisation score hero, 9 pillar score bars |
+| ✅ | Create `mobile/src/components/PillarBar.tsx` — Horizontal bar with pillar color, score label, delta indicator |
+| ✅ | Wire Progress tab: `GET /progress` on mount, pull-to-refresh |
+| ✅ | Handle empty state: show "Complete your first task to see progress" when no tasks completed yet |
 
 ---
 

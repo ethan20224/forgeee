@@ -69,6 +69,87 @@ export interface GeneratePlanResponse {
   from_cache: boolean
 }
 
+// --- Tasks ---
+
+export interface TaskResponse {
+  id: string
+  title: string
+  category: string
+  pillar: string
+  tier: string
+  why_it_works: string | null
+  duration_mins: number | null
+  day_number: number
+  week_number: number | null
+  xp_value: number
+  is_completed: boolean
+  completed_at: string | null
+}
+
+export interface CompleteTaskResponse {
+  task_id: string
+  xp_earned: number
+  streak_bonus: number
+  total_xp: number
+  new_streak: number
+  level: number
+  pillar_affected: string
+  new_pillar_score: number
+  streak_milestone: number | null
+}
+
+export interface HeatmapDay {
+  day_number: number
+  total_tasks: number
+  completed_tasks: number
+  completion_rate: number
+  primary_pillar: string | null
+}
+
+export interface HeatmapResponse {
+  days: HeatmapDay[]
+  total_days: number
+  overall_completion_rate: number
+}
+
+// --- Progress ---
+
+export interface PillarScoreData {
+  pillar: string
+  label: string
+  score: number
+  delta_vs_baseline: number
+  weight: number
+}
+
+export interface ProgressResponse {
+  optimisation_score: number
+  delta_vs_baseline: number
+  current_streak: number
+  longest_streak: number
+  total_xp: number
+  level: number
+  pillar_scores: PillarScoreData[]
+}
+
+export interface PillarHistoryPoint {
+  day_number: number
+  score: number
+}
+
+export interface PillarDetailResponse {
+  pillar: string
+  label: string
+  score: number
+  delta_vs_baseline: number
+  weight: number
+  rank: number
+  tasks_completed: number
+  history: PillarHistoryPoint[]
+}
+
+// --- Common ---
+
 export interface ApiError {
   detail: string
 }

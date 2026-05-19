@@ -2,6 +2,23 @@
 
 ## 2026-05-19
 
+### Frontend — F5 Main App Shell + Home Screen Complete
+
+- **F5: Main App Shell + Home Screen**
+  - Created `src/api/tasks.ts` (getTodaysTasks, completeTask, getHeatmap) and `src/api/progress.ts` (getProgress, getPillarDetail)
+  - Created Zustand stores: `programStore.ts` (plan, tasks, completion) and `progressStore.ts` (scores, streak, XP, level)
+  - Ported 5-tab layout (Home, Progress, Program, Goals, Profile) with Meridian dark theme + Ionicons
+  - Built Home screen: time-based greeting, streak badge, completion ring (SVG), today's task list
+  - Created `TaskCard` component with Reanimated press-scale animation, checkbox, pillar label, XP badge
+  - Created `StreakBadge` with flame icon, hot state (7+ days), milestone callout
+  - Created `CompletionRing` — SVG circular progress with fraction label
+  - Created `PillarBar` — horizontal bar with score, delta indicator, color
+  - Built Progress tab: FORGE Score hero card, delta vs baseline, XP/level display, 9 pillar bars
+  - Pull-to-refresh on both Home and Progress tabs
+  - Empty states handled for no tasks and no progress
+  - Installed `react-native-svg` for ring component
+  - TypeScript compilation clean (zero errors)
+
 ### Backend — P7 Progress & Score Calculator Complete
 
 - **P7: Progress & Score Calculator**
