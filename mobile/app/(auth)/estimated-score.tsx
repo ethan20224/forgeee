@@ -178,7 +178,7 @@ export default function EstimatedScoreScreen() {
 
       <View style={styles.footer}>
         <PrimaryButton onPress={handleCTA}>
-          Save my protocol \u2192
+          Save my protocol →
         </PrimaryButton>
         <Text style={styles.footerNote}>
           Free to start. No card required.
