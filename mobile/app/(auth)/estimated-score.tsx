@@ -4,9 +4,9 @@ import {
   Text,
   ScrollView,
   StyleSheet,
-  SafeAreaView,
   Pressable,
 } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { useRouter } from "expo-router"
 import { Feather } from "@expo/vector-icons"
 import { Colors, Spacing, Typography, Radius } from "@/constants/design"

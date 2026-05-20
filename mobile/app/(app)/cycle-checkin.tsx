@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Platform,
 } from "react-native"
 import { router } from "expo-router"
 import * as ImagePicker from "expo-image-picker"
@@ -43,20 +44,34 @@ export default function CycleCheckinScreen() {
   }
 
   const takePhoto = async () => {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync()
-    if (status !== "granted") {
-      Alert.alert("Permission needed", "Camera access is required to take a photo.")
-      return
-    }
+    if (Platform.OS === "ios" || Platform.OS === "android") {
+      const camResult = await ImagePicker.getCameraPermissionsAsync()
+      if (!camResult.granted) {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync()
+        if (status !== "granted") {
+          Alert.alert("Permission needed", "Camera access is required to take a photo.")
+          return
+        }
+      }
 
-    const result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: scanMode === "face" ? [1, 1] : [3, 4],
-      quality: 0.8,
-    })
+      try {
+        const result = await ImagePicker.launchCameraAsync({
+          allowsEditing: true,
+          aspect: scanMode === "face" ? [1, 1] : [3, 4],
+          quality: 0.8,
+        })
 
-    if (!result.canceled && result.assets[0]) {
-      setPhotoUri(result.assets[0].uri)
+        if (!result.canceled && result.assets[0]) {
+          setPhotoUri(result.assets[0].uri)
+        }
+      } catch {
+        Alert.alert(
+          "Camera unavailable",
+          "Camera is not available on this device. Please use the gallery instead."
+        )
+      }
+    } else {
+      Alert.alert("Not supported", "Camera is not available on web. Use gallery instead.")
     }
   }
 

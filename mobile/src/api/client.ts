@@ -1,7 +1,9 @@
+import { Platform } from "react-native"
 import { getTokens, saveTokens, clearTokens } from "@/store/authStorage"
 
+const DEFAULT_HOST = Platform.OS === "android" ? "10.0.2.2" : "localhost"
 const BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:8000/api/v1"
+  process.env.EXPO_PUBLIC_API_URL ?? `http://${DEFAULT_HOST}:8000/api/v1`
 
 let isRefreshing = false
 let refreshPromise: Promise<boolean> | null = null
