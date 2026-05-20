@@ -1,16 +1,38 @@
+import { useEffect } from "react"
 import { View, Text, Pressable, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useRouter } from "expo-router"
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withTiming,
+  Easing,
+} from "react-native-reanimated"
 import { Colors, Typography, Spacing, Radius } from "@/constants/design"
 
 export default function LandingScreen() {
   const router = useRouter()
+  const breathe = useSharedValue(0)
+
+  useEffect(() => {
+    breathe.value = withRepeat(
+      withTiming(1, { duration: 3500, easing: Easing.inOut(Easing.sin) }),
+      -1,
+      true,
+    )
+  }, [])
+
+  const glowStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: 1 + breathe.value * 0.085 }],
+    opacity: 0.10 + breathe.value * 0.04,
+  }))
 
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.container}>
         <View style={styles.hero}>
-          <View style={styles.glow} />
+          <Animated.View style={[styles.glow, glowStyle]} />
           <Text style={styles.wordmark}>FORGE</Text>
           <Text style={styles.tagline}>
             Your appearance. Measured. Improved.
@@ -56,10 +78,10 @@ const styles = StyleSheet.create({
   },
   glow: {
     position: "absolute",
-    width: 240,
-    height: 240,
-    borderRadius: 120,
-    backgroundColor: Colors.emberDim,
+    width: 280,
+    height: 280,
+    borderRadius: 140,
+    backgroundColor: Colors.ember,
   },
   wordmark: {
     fontSize: Typography.sizes.display,
