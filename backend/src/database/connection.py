@@ -1,4 +1,5 @@
 from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
@@ -27,6 +28,17 @@ async def get_db() -> AsyncGenerator[AsyncSession]:
         try:
             yield session
             await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
+
+
+@asynccontextmanager
+async def get_async_session() -> AsyncGenerator[AsyncSession]:
+    """Context manager for background jobs (not tied to request lifecycle)."""
+    async with async_session_factory() as session:
+        try:
+            yield session
         except Exception:
             await session.rollback()
             raise

@@ -2,6 +2,102 @@
 
 ## 2026-05-19
 
+### Sprint 7 — Web Export + Production Deployment Config Complete
+
+- **P15: React Native Web Export**
+  - Created `app.config.ts` — typed config with web theme, permissions, plugin config
+  - Installed web dependencies: react-dom, react-native-web, @expo/metro-runtime
+  - Web-compatible auth storage already handled (SecureStore → localStorage fallback)
+  - expo-image-picker works on web via native file input (no platform gates needed)
+  - react-native-reanimated and react-native-svg work on web out of the box
+  - Web export builds successfully: `npx expo export --platform web` → 2.45 MB JS bundle
+  - Created `vercel.json` — SPA rewrites, security headers (X-Frame-Options, CSP, Referrer-Policy)
+
+- **P16: Production Deployment Configuration**
+  - Enhanced Dockerfile: multi-stage build, 2 uvicorn workers, built-in healthcheck, PYTHONUNBUFFERED
+  - Created `fly.toml` — shared-cpu-1x, 512MB, syd region, auto-stop/start, /health check
+  - Created `.env.production` — complete template with all required environment variables
+  - Created `.dockerignore` — excludes venv, caches, env files, git
+  - Added `GET /health/ready` endpoint — verifies database connectivity
+  - Created `scripts/deploy.sh` — alembic upgrade + fly deploy + health verification
+  - 185 backend tests still passing, TypeScript compilation clean
+
+### Sprint 6 — Subscriptions + Scheduler + Settings Complete
+
+- **P12: Subscription Webhooks**
+  - Created `src/subscriptions/schemas.py` — RevenueCat and Stripe webhook payload models
+  - Created `src/subscriptions/service.py` — sync_revenuecat_event(), sync_stripe_event(), get_subscription_status()
+  - Created `src/subscriptions/router.py` — GET /status, POST /webhooks/revenuecat, POST /webhooks/stripe
+  - RevenueCat: handles INITIAL_PURCHASE, RENEWAL, PRODUCT_CHANGE, CANCELLATION, EXPIRATION
+  - Stripe: handles checkout.session.completed, invoice.paid, customer.subscription.deleted
+  - Tier mapping: forge_pro_monthly/annual → pro, forge_premium_monthly/annual → premium
+  - 9 tests — all passing
+
+- **P13: Background Scheduler**
+  - Created `src/scheduler/jobs.py` — advance_program_days, check_season_rollovers, generate_weekly_reports, check_streaks
+  - Created `src/scheduler/setup.py` — APScheduler AsyncIOScheduler with CronTrigger integration
+  - Jobs run daily at 00:05 (day advance), 00:10 (rollover), 00:15 (streaks), Sunday 06:00 (reports)
+  - Integrated into FastAPI lifespan (start on boot, stop on shutdown)
+  - 8 tests — all passing (185 total in suite)
+
+- **F9: Profile Tab + Settings + Account**
+  - Created `src/api/subscriptions.ts` — getSubscriptionStatus()
+  - Rebuilt Profile tab: avatar initial, name, email, tier badge (Free/Pro/Premium), stats row (season/day/streak/level), XP bar, menu
+  - Created Settings screen: notification toggles, version info, legal links
+  - Created Account screen: user info display, danger zone with delete account + confirmation modal
+  - Sign-out flow: clears tokens + redirects to login
+  - Delete account flow: confirmation alert → DELETE /auth/account → sign out → login
+  - TypeScript compilation clean (zero errors)
+
+### Sprint 5 — Gamification Complete
+
+- **P11: Gamification Backend**
+  - Created `src/gamification/badges.py` — 22 badge definitions across 6 categories (streak, tasks, level, cycles, score, season)
+  - Created `src/gamification/challenges.py` — 10 time-limited challenge templates with XP rewards
+  - Created `src/gamification/xp.py` — 25-level progression system with named levels (Beginner → FORGE)
+  - Created `src/gamification/service.py` — badge unlock (idempotent), challenge lifecycle, streak info, XP progression
+  - Created `src/gamification/router.py` — GET /achievements, GET /challenges, POST /challenges/start, GET /streak, GET /xp
+  - 25 tests (13 unit + 12 integration) — all passing (168 total in suite)
+
+- **F8: Gamification UI (Goals Tab)**
+  - Created `src/api/gamification.ts` — full API client (achievements, challenges, streak, XP, start challenge)
+  - Created `XPBar` component — animated progress bar with level name and total XP
+  - Created `ChallengeCard` component — progress bar, reward badge, start button for available challenges
+  - Created `AchievementBadge` component — locked/unlocked states with ember glow
+  - Rebuilt Goals tab — XP bar, cycle CTA, active/available challenges, badge grid, cycle history
+  - Added gamification TypeScript interfaces to `types/api.ts`
+  - TypeScript compilation clean (zero errors)
+
+### Sprint 4 — Photo Check-ins + Cycles Complete
+
+- **P9: Cloudflare R2 Storage**
+  - Created `src/storage/r2_client.py` — S3-compatible presigned URL generation for Cloudflare R2
+  - `generate_upload_url()` — presigned PUT (5-min expiry), path: `cycles/{user_id}/{timestamp}-{angle}.jpg`
+  - `generate_download_url()` — presigned GET (1-hour expiry)
+  - `generate_download_urls()` — batch download URLs for photo timeline
+  - `delete_object()` — remove photo from R2
+  - 8 unit tests (mocked boto3 client) — all passing
+
+- **P10: Cycle Check-Ins & DeepSeek VL2 Photo Analysis**
+  - Created `src/cycles/prompts.py` — face-scan and full-scan system prompts for VL2
+  - Created `src/cycles/photo_analyser.py` — `analyse_photos()` with DeepSeek VL2 + simulation mode
+  - Created `src/cycles/service.py` — eligibility (7-day cooldown), submit analysis, history, compare
+  - Created `src/cycles/schemas.py` — UploadUrlResponse, CycleAnalysisResponse, CycleCompareResponse, etc.
+  - Created `src/cycles/router.py` — POST /upload-url, GET /eligibility, POST /analyse, GET /history, GET /{id}, GET /compare
+  - Score validation: clamp [0,100], face-shape whitelist, scan mode filtering
+  - Progress table auto-updated with new pillar scores after analysis
+  - 16 integration/unit tests — all passing (143 total in suite)
+
+- **F7: Photo Check-In + Cycle History UI**
+  - Installed `expo-image-picker`
+  - Created `src/api/cycles.ts` — full API client (upload URL, analyse, history, detail, compare)
+  - Created `src/store/cycleStore.ts` — Zustand store (eligibility, submitCheckin, history)
+  - Created `cycle-checkin.tsx` — camera/gallery capture, face/full scan mode toggle, upload + analyse flow
+  - Created `cycle-result.tsx` — score hero, pillar grid, AI insight card, next focus card
+  - Rebuilt Goals tab — eligibility CTA, cycle history list, navigation to results
+  - Added TypeScript interfaces for all cycle types to `types/api.ts`
+  - TypeScript compilation clean (zero errors)
+
 ### Frontend — F6 Coaching UI + Program Tab Complete
 
 - **F6: Coaching UI + Program Tab**

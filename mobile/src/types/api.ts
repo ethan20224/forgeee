@@ -198,6 +198,122 @@ export interface SeasonReportResponse {
   streak_best: number
 }
 
+// --- Cycles ---
+
+export interface UploadUrlResponse {
+  upload_url: string
+  object_key: string
+  expires_in: number
+}
+
+export interface PillarScores {
+  facial_composition_score: number | null
+  skin_score: number | null
+  grooming_score: number | null
+  hair_score: number | null
+  posture_score: number | null
+  style_score: number | null
+  sleep_score: number | null
+  nutrition_score: number | null
+  voice_score: number | null
+}
+
+export interface CycleAnalysisResponse {
+  cycle_id: string
+  cycle_number: number
+  scan_mode: string
+  scores: PillarScores
+  face_shape: string | null
+  ai_insight: string | null
+  next_focus: string | null
+  checked_in_at: string
+}
+
+export interface CycleHistoryItem {
+  cycle_id: string
+  cycle_number: number
+  cycle_type: string
+  face_shape: string | null
+  optimisation_score: number | null
+  checked_in_at: string
+}
+
+export interface CycleHistoryResponse {
+  cycles: CycleHistoryItem[]
+  total: number
+}
+
+export interface CycleCompareResponse {
+  current: PillarScores
+  previous: PillarScores
+  deltas: Record<string, number | null>
+  days_between: number
+}
+
+export interface EligibilityResponse {
+  eligible: boolean
+  next_eligible_at: string | null
+  reason: string | null
+  current_cycle_number: number
+}
+
+// --- Gamification ---
+
+export interface BadgeResponse {
+  badge_id: string
+  name: string
+  description: string
+  icon: string
+  category: string
+  unlocked: boolean
+  unlocked_at: string | null
+}
+
+export interface AchievementsResponse {
+  badges: BadgeResponse[]
+  total_unlocked: number
+  total_available: number
+}
+
+export interface ChallengeResponse {
+  id: string | null
+  challenge_id: string
+  name: string
+  description: string
+  icon: string
+  target: number
+  progress: number
+  duration_days: number
+  xp_reward: number
+  status: string
+  started_at: string | null
+  pillar: string | null
+}
+
+export interface ChallengesListResponse {
+  active: ChallengeResponse[]
+  available: ChallengeResponse[]
+  completed_count: number
+}
+
+export interface StreakInfoResponse {
+  current_streak: number
+  longest_streak: number
+  milestones: number[]
+  next_milestone: number | null
+  streak_badges_unlocked: string[]
+}
+
+export interface XPInfoResponse {
+  total_xp: number
+  current_level: number
+  level_name: string
+  xp_progress: number
+  xp_needed: number
+  progress_pct: number
+  xp_for_next_level: number | null
+}
+
 // --- Common ---
 
 export interface ApiError {

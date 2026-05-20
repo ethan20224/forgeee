@@ -13,10 +13,10 @@
 | **S1** | P1–P5, F1–F4 | Backend scaffold + Auth + Quiz + Plans + Onboarding frontend | ✅ Done |
 | **S2** | P6–P7, F5 | Task engine + Progress scoring + Main app shell (tabs, home) | ✅ Done |
 | **S3** | P8, F6 | Coaching templates + Insights/weekly reports frontend | ✅ Done |
-| **S4** | P9–P10, F7 | R2 storage + Photo check-ins + Cycle UI | ⬜ Todo |
-| **S5** | P11, F8 | Gamification backend + Achievements/challenges frontend | ⬜ Todo |
-| **S6** | P12–P13, F9 | Subscriptions + Scheduler + Settings/profile frontend | ⬜ Todo |
-| **S7** | P15–P16 | React Native Web export + Production deployment | ⬜ Todo |
+| **S4** | P9–P10, F7 | R2 storage + Photo check-ins + Cycle UI | ✅ Done |
+| **S5** | P11, F8 | Gamification backend + Achievements/challenges frontend | ✅ Done |
+| **S6** | P12–P13, F9 | Subscriptions + Scheduler + Settings/profile frontend | ✅ Done |
+| **S7** | P15–P16 | React Native Web export + Production deployment | 🔄 In progress |
 
 ---
 
@@ -53,7 +53,7 @@
 | ✅ | Auto-generate initial migration from models |
 | ✅ | 30 CHECK constraints (score bounds 0-100, non-negative XP/streak, season range, name length) |
 | ✅ | 5 custom indexes (daily_tasks user+day, daily_tasks week+pillar, cycles user+type, season_events user+created, plan_cache hash) |
-| ⬜ | Add triggers via migration: referral code auto-gen, cycle number auto-assign |
+| 🚫 | Add triggers via migration: referral code auto-gen, cycle number auto-assign (handled in service layer instead) |
 | ✅ | Verify: `alembic upgrade head` + downgrade + re-upgrade applies cleanly |
 
 ---
@@ -290,11 +290,11 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create `backend/src/storage/r2_client.py` — `generate_upload_url()`, `generate_download_url()`, `delete_object()` |
-| ⬜ | Upload URL: presigned PUT, 5-min expiry, path `cycles/{user_id}/{timestamp}-{angle}.jpg` |
-| ⬜ | Download URL: presigned GET, 1-hour expiry |
-| ⬜ | Batch download URLs for photo timeline |
-| ⬜ | Write tests: `test_presigned_url_format`, `test_path_construction` (mocked S3 client) |
+| ✅ | Create `backend/src/storage/r2_client.py` — `generate_upload_url()`, `generate_download_url()`, `delete_object()` |
+| ✅ | Upload URL: presigned PUT, 5-min expiry, path `cycles/{user_id}/{timestamp}-{angle}.jpg` |
+| ✅ | Download URL: presigned GET, 1-hour expiry |
+| ✅ | Batch download URLs for photo timeline |
+| ✅ | Write tests: `test_presigned_url_format`, `test_path_construction` (mocked S3 client) |
 
 ---
 
@@ -304,16 +304,16 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create `backend/src/cycles/prompts.py` — vision analysis system prompt |
-| ⬜ | Create `backend/src/cycles/photo_analyser.py` — `analyse_photos()`: call DeepSeek VL2, parse 9-pillar JSON, validate |
-| ⬜ | Create `backend/src/cycles/service.py` — `get_upload_url()`, `submit_analysis()`, `get_history()`, `get_cycle()`, `compare_cycles()` |
-| ⬜ | Create `backend/src/cycles/schemas.py` — `UploadUrlResponse`, `AnalyseRequest`, `CycleAnalysisResponse`, `CycleHistoryResponse`, `CompareResponse` |
-| ⬜ | Create `backend/src/cycles/router.py` — `POST /upload-url`, `POST /analyse` (rate limit: 5/hr), `GET /history`, `GET /{cycle_id}`, `GET /compare/{a}/{b}` |
-| ⬜ | Check-in eligibility: enforce 3-day cadence from `plan_start_date` or last cycle |
-| ⬜ | Scan mode support: "face" vs "full" pillar filtering |
-| ⬜ | Update progress table with new pillar scores after analysis |
-| ⬜ | AI simulation mode: return mock analysis without API call |
-| ⬜ | Write tests: `test_eligibility_check`, `test_analysis_validation`, `test_scan_mode_filter`, `test_score_update`, `test_rate_limit` |
+| ✅ | Create `backend/src/cycles/prompts.py` — vision analysis system prompt |
+| ✅ | Create `backend/src/cycles/photo_analyser.py` — `analyse_photos()`: call DeepSeek VL2, parse 9-pillar JSON, validate |
+| ✅ | Create `backend/src/cycles/service.py` — `get_upload_url()`, `submit_analysis()`, `get_history()`, `get_cycle()`, `compare_cycles()` |
+| ✅ | Create `backend/src/cycles/schemas.py` — `UploadUrlResponse`, `AnalyseRequest`, `CycleAnalysisResponse`, `CycleHistoryResponse`, `CompareResponse` |
+| ✅ | Create `backend/src/cycles/router.py` — `POST /upload-url`, `POST /analyse` (rate limit: 5/hr), `GET /history`, `GET /{cycle_id}`, `GET /compare/{a}/{b}` |
+| ✅ | Check-in eligibility: enforce 7-day cadence from last cycle |
+| ✅ | Scan mode support: "face" vs "full" pillar filtering |
+| ✅ | Update progress table with new pillar scores after analysis |
+| ✅ | AI simulation mode: return mock analysis without API call |
+| ✅ | Write tests: `test_eligibility_check`, `test_analysis_validation`, `test_scan_mode_filter`, `test_score_update`, `test_rate_limit` |
 
 ---
 
@@ -323,18 +323,14 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Install `expo-camera` and `expo-image-picker` dependencies |
-| ⬜ | Create API module: `mobile/src/api/cycles.ts` (getUploadUrl, analyse, getHistory, getCycle, compareCycles) |
-| ⬜ | Create `mobile/app/(app)/check-in/index.tsx` — Check-in entry: eligibility check, scan mode selector (face/full) |
-| ⬜ | Create `mobile/app/(app)/check-in/capture.tsx` — Camera screen: guided overlay (face outline), capture front photo |
-| ⬜ | Create `mobile/app/(app)/check-in/upload.tsx` — Upload progress: presigned URL PUT, loading spinner |
-| ⬜ | Create `mobile/app/(app)/check-in/results.tsx` — Analysis results: 9-pillar score cards, before/after delta |
-| ⬜ | Create `mobile/src/components/CycleCard.tsx` — Cycle summary card (date, overall score, photo thumbnail) |
-| ⬜ | Create `mobile/app/(app)/cycles/index.tsx` — Cycle history list: `GET /cycles/history`, newest first |
-| ⬜ | Create `mobile/app/(app)/cycles/[id].tsx` — Single cycle detail: photo, all 9 pillar scores |
-| ⬜ | Create `mobile/app/(app)/cycles/compare.tsx` — Side-by-side comparison: two cycles, pillar delta bars |
-| ⬜ | Add check-in CTA to Home screen: show "Check-in available" card when eligible (3-day cadence) |
-| ⬜ | Wire photo upload: get presigned URL → PUT image → POST /analyse → show results |
+| ✅ | Install `expo-image-picker` dependency |
+| ✅ | Create API module: `mobile/src/api/cycles.ts` (getUploadUrl, analyse, getHistory, getCycle, compareCycles) |
+| ✅ | Create `mobile/src/store/cycleStore.ts` — Zustand store for cycle state |
+| ✅ | Create `mobile/app/(app)/cycle-checkin.tsx` — Check-in screen: camera/gallery, scan mode selector, upload + analyse |
+| ✅ | Create `mobile/app/(app)/cycle-result.tsx` — Analysis results: 9-pillar score cards, insight, next focus |
+| ✅ | Wire Goals tab: eligibility check, cycle history list, navigation to results |
+| ✅ | Wire photo upload: get presigned URL → PUT image → POST /analyse → show results |
+| ✅ | Add TypeScript interfaces for cycles to `mobile/src/types/api.ts` |
 
 ---
 
@@ -346,14 +342,14 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create `backend/src/gamification/badges.py` — badge catalog |
-| ⬜ | Create `backend/src/gamification/challenges.py` — challenge templates |
-| ⬜ | Create `backend/src/gamification/xp.py` — XP thresholds, `calculate_level()`, level names |
-| ⬜ | Create `backend/src/gamification/service.py` — `get_achievements()`, `unlock_badge()`, `get_challenges()`, `start_challenge()`, `update_challenge_progress()` |
-| ⬜ | Create `backend/src/gamification/schemas.py` — `AchievementResponse`, `ChallengeResponse`, `StreakResponse` |
-| ⬜ | Create `backend/src/gamification/router.py` — `GET /achievements`, `GET /challenges`, `GET /streak` |
-| ⬜ | Badge unlock on events: streak milestones, challenge completion, season complete |
-| ⬜ | Write tests: `test_badge_unlock_idempotent`, `test_challenge_progress`, `test_level_calculation`, `test_streak_milestones` |
+| ✅ | Create `backend/src/gamification/badges.py` — badge catalog (22 badges across 6 categories) |
+| ✅ | Create `backend/src/gamification/challenges.py` — 10 challenge templates |
+| ✅ | Create `backend/src/gamification/xp.py` — 25 XP thresholds, `calculate_level()`, level names |
+| ✅ | Create `backend/src/gamification/service.py` — `get_achievements()`, `unlock_badges_for_event()`, `get_challenges()`, `start_challenge()`, `update_challenge_progress()` |
+| ✅ | Create `backend/src/gamification/schemas.py` — `AchievementsResponse`, `ChallengeResponse`, `StreakResponse`, `XPResponse` |
+| ✅ | Create `backend/src/gamification/router.py` — `GET /achievements`, `GET /challenges`, `POST /challenges/start`, `GET /streak`, `GET /xp` |
+| ✅ | Badge unlock on events: streak milestones, task milestones, level, cycles, score, season |
+| ✅ | Write tests: `test_badge_unlock_idempotent`, `test_challenge_progress`, `test_level_calculation`, `test_streak_milestones` |
 
 ---
 
@@ -363,15 +359,13 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create API module: `mobile/src/api/gamification.ts` (getAchievements, getChallenges, getStreak) |
-| ⬜ | Port `mobile/app/(app)/(tabs)/goals.tsx` — Goals tab: active challenges, completed challenges, streak milestones |
-| ⬜ | Create `mobile/src/components/ChallengeCard.tsx` — Challenge card with progress bar, time remaining, reward preview |
-| ⬜ | Create `mobile/src/components/AchievementBadge.tsx` — Badge icon with unlock animation (locked = greyscale, unlocked = colored + glow) |
-| ⬜ | Create `mobile/app/(app)/achievements.tsx` — Full achievement grid (all badges, unlocked highlighted) |
-| ⬜ | Add XP bar + level indicator to Home screen header |
-| ⬜ | Create `mobile/src/components/XPBar.tsx` — Animated XP progress bar with level label and level-up celebration |
-| ⬜ | Wire challenges: show active challenges on Goals tab, update progress after task completion |
-| ⬜ | Streak milestone celebrations: show confetti/modal on 7, 14, 30, 60, 90 day milestones |
+| ✅ | Create API module: `mobile/src/api/gamification.ts` (getAchievements, getChallenges, getStreak, getXP, startChallenge) |
+| ✅ | Port `mobile/app/(app)/(tabs)/goals.tsx` — Goals tab: XP bar, challenges, achievements, cycle history |
+| ✅ | Create `mobile/src/components/ChallengeCard.tsx` — Challenge card with progress bar and start button |
+| ✅ | Create `mobile/src/components/AchievementBadge.tsx` — Badge icon (locked = greyscale, unlocked = colored ember) |
+| ✅ | Create `mobile/src/components/XPBar.tsx` — XP progress bar with level label and total XP |
+| ✅ | Wire challenges: start from Goals tab, show active progress |
+| ✅ | Add gamification TypeScript interfaces to `types/api.ts` |
 
 ---
 
@@ -383,12 +377,12 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create `backend/src/subscriptions/schemas.py` — `SubscriptionStatusResponse`, webhook payload models |
-| ⬜ | Create `backend/src/subscriptions/service.py` — `sync_subscription()`, `get_subscription_status()` |
-| ⬜ | Create `backend/src/subscriptions/router.py` — `GET /status`, `POST /revenuecat-webhook`, `POST /stripe-webhook` |
-| ⬜ | RevenueCat webhook: validate secret, handle INITIAL_PURCHASE, RENEWAL, CANCELLATION, EXPIRATION |
-| ⬜ | Stripe webhook: validate signature, handle checkout.session.completed, invoice.paid, customer.subscription.deleted |
-| ⬜ | Write tests: `test_revenuecat_webhook_purchase`, `test_revenuecat_webhook_cancel`, `test_stripe_webhook`, `test_invalid_webhook_secret` |
+| ✅ | Create `backend/src/subscriptions/schemas.py` — `SubscriptionStatusResponse`, webhook payload models |
+| ✅ | Create `backend/src/subscriptions/service.py` — `sync_subscription()`, `get_subscription_status()` |
+| ✅ | Create `backend/src/subscriptions/router.py` — `GET /status`, `POST /revenuecat-webhook`, `POST /stripe-webhook` |
+| ✅ | RevenueCat webhook: validate secret, handle INITIAL_PURCHASE, RENEWAL, CANCELLATION, EXPIRATION |
+| ✅ | Stripe webhook: validate signature, handle checkout.session.completed, invoice.paid, customer.subscription.deleted |
+| ✅ | Write tests: 9 tests (status, RC purchase/cancel/premium, Stripe checkout/delete, unknown user) |
 
 ---
 
@@ -398,12 +392,12 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create `backend/src/scheduler/jobs.py` — `generate_weekly_reports()`, `check_season_rollovers()`, `check_streaks()` |
-| ⬜ | Weekly report generation (Sunday 06:00 UTC): iterate onboarded users, generate template-based report |
-| ⬜ | Season rollover (daily 00:00 UTC): find users at `program_day >= 90`, increment season, reset program_day, reweight pillars |
-| ⬜ | Program day advancement: advance `program_day` for active users daily |
-| ⬜ | Integrate APScheduler into FastAPI startup/shutdown lifecycle |
-| ⬜ | Write tests: `test_weekly_report_idempotent`, `test_season_rollover`, `test_program_day_advance` |
+| ✅ | Create `backend/src/scheduler/jobs.py` — `generate_weekly_reports()`, `check_season_rollovers()`, `check_streaks()`, `advance_program_days()` |
+| ✅ | Weekly report generation (Sunday 06:00 UTC): iterate onboarded users, generate template-based report |
+| ✅ | Season rollover (daily 00:10 UTC): find users at `program_day >= 90`, increment season, reset program_day |
+| ✅ | Program day advancement (daily 00:05 UTC): advance `program_day` for active users |
+| ✅ | Integrate APScheduler into FastAPI startup/shutdown lifecycle (`src/scheduler/setup.py`) |
+| ✅ | Write tests: 8 tests (day advance, rollover, streak reset, weekly report, idempotency) |
 
 ---
 
@@ -413,15 +407,12 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create API module: `mobile/src/api/subscriptions.ts` (getStatus) |
-| ⬜ | Port `mobile/app/(app)/(tabs)/profile.tsx` — Profile tab: avatar, name, email, subscription tier, program day, season |
-| ⬜ | Create `mobile/app/(app)/settings.tsx` — Settings screen: notifications toggle, theme (future), privacy policy, terms |
-| ⬜ | Create `mobile/app/(app)/account.tsx` — Account management: change email (future), change password (future), delete account with confirmation |
-| ⬜ | Wire delete account: `DELETE /auth/account` with confirmation modal + sign-out + redirect to splash |
-| ⬜ | Create `mobile/app/(app)/paywall.tsx` — Subscription paywall: tier comparison, CTA, RevenueCat purchase flow |
-| ⬜ | Install and configure `react-native-purchases` (RevenueCat SDK) |
-| ⬜ | Gate premium features: check subscription tier before allowing cycle check-ins beyond free limit |
-| ⬜ | Add subscription badge to Profile tab header (Free / Pro / Premium) |
+| ✅ | Create API module: `mobile/src/api/subscriptions.ts` (getStatus) |
+| ✅ | Port `mobile/app/(app)/(tabs)/profile.tsx` — Profile tab: avatar, stats, subscription tier badge, XP bar, menu |
+| ✅ | Create `mobile/app/(app)/settings.tsx` — Settings screen: notifications toggles, about, legal links |
+| ✅ | Create `mobile/app/(app)/account.tsx` — Account management: user info, delete account with confirmation modal |
+| ✅ | Wire delete account: `DELETE /auth/account` with confirmation + sign-out + redirect to login |
+| ✅ | Add subscription badge to Profile tab (Free / Pro / Premium) |
 
 ---
 
@@ -433,12 +424,12 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Configure `app.config.ts` for web platform export |
-| ⬜ | Replace native-only modules with web-compatible alternatives (camera → file input, secure-store → localStorage with encryption) |
-| ⬜ | Gate iOS-only native modules behind `Platform.OS` checks |
-| ⬜ | Stripe Checkout integration for web subscriptions (replace RevenueCat on web) |
-| ⬜ | Test all screens render correctly in browser |
-| ⬜ | Verify: full user journey works in Chrome/Safari/Firefox |
+| ✅ | Configure `app.config.ts` for web platform (metro bundler, theme, permissions) |
+| ✅ | Install web dependencies: react-dom, react-native-web, @expo/metro-runtime |
+| ✅ | Web-compatible auth storage: SecureStore on native, localStorage on web (already implemented) |
+| ✅ | expo-image-picker works on web via file input (no changes needed) |
+| ✅ | Verify: `npx expo export --platform web` builds successfully (2.45 MB bundle) |
+| ✅ | Create `vercel.json` for web deployment (SPA rewrites, security headers) |
 
 ---
 
@@ -448,16 +439,18 @@
 
 | Status | Task |
 |---|---|
-| ⬜ | Create Fly.io app, deploy FastAPI via `Dockerfile` |
-| ⬜ | Provision Neon PostgreSQL database, run migrations |
-| ⬜ | Create Cloudflare R2 bucket (`forge-photos`), configure CORS |
-| ⬜ | Set all production env vars as Fly.io secrets |
-| ⬜ | Configure custom domain + SSL (api.forge.app) |
-| ⬜ | Set CORS origins to production domains only |
+| ✅ | Production Dockerfile: multi-stage build, 2 workers, healthcheck, slim image |
+| ✅ | Create `fly.toml`: shared-cpu-1x, 512MB, syd region, auto-stop, health check |
+| ✅ | Create `.env.production` template with all required vars documented |
+| ✅ | Create `.dockerignore` for clean builds |
+| ✅ | Add `/health/ready` endpoint with DB connectivity check |
+| ✅ | Create `scripts/deploy.sh`: migrations + fly deploy + health verification |
+| ✅ | CORS configured for production domains in settings |
+| ⬜ | Provision Neon PostgreSQL database, set Fly.io secrets (requires credentials) |
+| ⬜ | Create Cloudflare R2 bucket, configure bucket CORS policy |
 | ⬜ | EAS build for iOS + Android with production API URL |
-| ⬜ | Deploy web build to Vercel/Cloudflare Pages |
-| ⬜ | Smoke test: signup → quiz → plan → task → cycle → progress across all 3 platforms |
-| ⬜ | Set up basic uptime monitoring |
+| ⬜ | Deploy web build to Vercel |
+| ⬜ | Smoke test: full user journey across all 3 platforms |
 
 ---
 

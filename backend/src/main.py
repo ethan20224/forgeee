@@ -15,7 +15,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     settings = get_settings()
     if not settings.is_production:
         print(f"Starting {settings.app_name} in {settings.app_env} mode")
+
+    from src.scheduler.setup import start_scheduler, stop_scheduler
+
+    start_scheduler()
     yield
+    stop_scheduler()
     print("Shutting down")
 
 
@@ -52,9 +57,12 @@ def create_app() -> FastAPI:
 
     from src.auth.router import router as auth_router
     from src.coaching.router import router as coaching_router
+    from src.cycles.router import router as cycles_router
+    from src.gamification.router import router as gamification_router
     from src.plans.router import router as plans_router
     from src.progress.router import router as progress_router
     from src.quiz.router import router as quiz_router
+    from src.subscriptions.router import router as subscriptions_router
     from src.tasks.router import router as tasks_router
 
     app.include_router(auth_router)
@@ -63,10 +71,23 @@ def create_app() -> FastAPI:
     app.include_router(tasks_router)
     app.include_router(progress_router)
     app.include_router(coaching_router)
+    app.include_router(cycles_router)
+    app.include_router(gamification_router)
+    app.include_router(subscriptions_router)
 
     @app.get("/health")
     async def health() -> dict[str, str]:
         return {"status": "ok"}
+
+    @app.get("/health/ready")
+    async def readiness() -> dict[str, str]:
+        from sqlalchemy import text
+
+        from src.database.connection import async_session_factory
+
+        async with async_session_factory() as session:
+            await session.execute(text("SELECT 1"))
+        return {"status": "ready", "database": "connected"}
 
     return app
 
