@@ -309,7 +309,7 @@ export default function PlanRevealScreen() {
               onTouchEnd={isSaving ? undefined : handleStartTransformation}
             >
               <Text style={styles.ctaText}>
-                {isSaving ? "Saving..." : "Start Day 1 \u2192"}
+                {isSaving ? "Saving..." : "Start Day 1 →"}
               </Text>
             </Animated.View>
           </Animated.View>

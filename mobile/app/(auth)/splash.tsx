@@ -24,7 +24,7 @@ export default function SplashScreen() {
     if (user?.onboarded) {
       router.replace("/(app)/(tabs)" as never)
     } else {
-      router.replace("/(auth)/welcome" as never)
+      router.replace("/(auth)/landing" as never)
     }
   }
 
@@ -49,7 +49,7 @@ export default function SplashScreen() {
             tryNavigate()
             if (!hasNavigated.current) {
               hasNavigated.current = true
-              router.replace("/(auth)/welcome" as never)
+              router.replace("/(auth)/landing" as never)
             }
           }, 300)
         }

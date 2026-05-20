@@ -106,7 +106,7 @@ export default function PlanLoadingScreen() {
         <Text style={styles.errorText}>{errorMsg}</Text>
         <Text
           style={styles.retryLink}
-          onPress={() => router.replace("/(auth)/welcome" as never)}
+          onPress={() => router.replace("/(auth)/landing" as never)}
         >
           Start over
         </Text>

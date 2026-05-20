@@ -119,7 +119,7 @@ export default function ProfileScreen() {
           label="Sign Out"
           onPress={async () => {
             await useUserStore.getState().signOut()
-            router.replace("/(auth)/login")
+            router.replace("/(auth)/landing")
           }}
           destructive
         />

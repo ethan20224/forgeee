@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native"
-import { useRouter } from "expo-router"
+import { useRouter, useLocalSearchParams } from "expo-router"
 import { Colors, Typography, Spacing, Radius } from "@/constants/design"
 import { useUserStore } from "@/store/userStore"
 import * as authApi from "@/api/auth"
@@ -15,8 +15,11 @@ import { ApiRequestError } from "@/api/client"
 
 export default function SignupScreen() {
   const router = useRouter()
+  const params = useLocalSearchParams<{ mode?: string }>()
   const setUser = useUserStore((s) => s.setUser)
-  const [mode, setMode] = useState<"signup" | "login">("signup")
+  const [mode, setMode] = useState<"signup" | "login">(
+    params.mode === "login" ? "login" : "signup",
+  )
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")

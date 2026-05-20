@@ -314,8 +314,8 @@ export default function QuizStep() {
       <View style={styles.footer}>
         <PrimaryButton onPress={handleContinue} disabled={!canContinue}>
           {stepNum === TOTAL
-            ? "Build my plan \u2192"
-            : "Continue \u2192"}
+            ? "Build my plan →"
+            : "Continue →"}
         </PrimaryButton>
       </View>
     </SafeAreaView>

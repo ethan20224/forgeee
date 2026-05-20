@@ -19,19 +19,19 @@ const SLIDES = [
     label: "THE TRUTH",
     headline: "Your appearance is measurable. And improvable.",
     body: "9 pillars. 90 days. A system designed around how your body actually changes.",
-    cta: "Show me the system \u2192",
+    cta: "Show me the system →",
   },
   {
     label: "THE SCIENCE",
     headline: "Your skin renews every 28 days. Habits take 66 days to stick.",
     body: "Our program is built around those exact timelines. Not around what looks impressive in an ad.",
-    cta: "Makes sense \u2192",
+    cta: "Makes sense →",
   },
   {
     label: "WHAT WE CAN CHANGE",
     headline: "Your appearance. Measured. Improved. Recorded.",
     body: "",
-    cta: "Build my program \u2192",
+    cta: "Build my program →",
   },
 ]
 

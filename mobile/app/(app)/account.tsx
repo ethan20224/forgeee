@@ -24,7 +24,7 @@ export default function AccountScreen() {
             try {
               await api.del("/auth/account")
               await signOut()
-              router.replace("/(auth)/login")
+              router.replace("/(auth)/landing")
             } catch (e: any) {
               Alert.alert("Error", e.message || "Failed to delete account")
             }
